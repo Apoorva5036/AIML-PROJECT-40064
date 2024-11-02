@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Next Word Prediction</title>
+    <script>
+        async function getPrediction() {
+            const seedText = document.getElementById('seedText').value;
+            const nextWords = document.getElementById('nextWords').value;
+
+            const response = await fetch('http://127.0.0.1:5000/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ seed_text: seedText, next_words: parseInt(nextWords) }),
+            });
+
+            const data = await response.json();
+            document.getElementById('result').innerText = data.predicted_text;
+        }
+    </script>
+</head>
+<body>
+    <h1>Next Word Prediction</h1>
+    <textarea id="seedText" rows="4" cols="50" placeholder="Enter your text here..."></textarea><br>
+    <input type="number" id="nextWords" placeholder="Number of words to predict"><br>
+    <button onclick="getPrediction()">Predict Next Words</button>
+    <h2>Predicted Text:</h2>
+    <p id="result"></p>
+</body>
+</html>
